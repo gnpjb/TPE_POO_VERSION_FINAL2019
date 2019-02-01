@@ -34,19 +34,27 @@ public abstract class Grid {
 	protected GameState state(){
 		return state;
 	}
-	
+
+	protected Cell initCell(int i,int j){
+		return new Cell(this);
+	}
+
+	protected void endInit(){}
+
 	public void initialize() {
 		moveMaker = new MoveMaker(this);
 		figureDetector = new FigureDetector(this);
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				g[i][j] = new Cell(this);
+				g[i][j] = initCell(i,j);
 				gMap.put(g[i][j], new Point(i,j));
 			}
 		}
 		fillCells();
 		fallElements();
-	}	
+		endInit();
+	}
+
 
 	public Element get(int i, int j) {
 		return g[i][j].getContent();
@@ -83,6 +91,9 @@ public abstract class Grid {
 	}
 	
 	public boolean tryMove(int i1, int j1, int i2, int j2) {
+		if(!g()[i1][j1].isMovable()||!g()[i2][j2].isMovable()){
+			return false;
+		}
 		Move move = moveMaker.getMove(i1, j1, i2, j2);
 		swapContent(i1, j1, i2, j2);
 		if (move.isValid()) {

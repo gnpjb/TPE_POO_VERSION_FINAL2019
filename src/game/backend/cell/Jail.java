@@ -2,9 +2,8 @@ package game.backend.cell;
 
 import game.backend.Grid;
 
-public class Jail extends Cell {
+public class Jail extends DestroyableCell {
 
-    boolean isDestroyed=false;
 
     public Jail(Grid grid) {
         super(grid);
@@ -12,7 +11,7 @@ public class Jail extends Cell {
 
     @Override
     public boolean isMovable() {
-        if(isDestroyed) {
+        if(getIsDestroyed()) {
             return super.isMovable();
         }else{
             return false;
@@ -20,8 +19,10 @@ public class Jail extends Cell {
     }
 
     @Override
-    public void clearContent() {
-        super.clearContent();
-        isDestroyed=true;
+    public String getKey() {
+        if(!getIsDestroyed()){
+            return "JAIL";
+        }
+        return null;
     }
 }

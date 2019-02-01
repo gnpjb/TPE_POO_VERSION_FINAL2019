@@ -4,73 +4,43 @@ import game.backend.GameState;
 import game.backend.Grid;
 import game.backend.cell.CandyGeneratorCell;
 import game.backend.cell.Cell;
+import game.backend.cell.Jail;
 import game.backend.element.Wall;
 
-public class Level2 extends Grid {
-    private static int REQUIRED_SCORE = 5000;
-    private static int MAX_MOVES = 20;
+import java.util.LinkedList;
 
-    private Cell wallCell;
-    private Cell candyGenCell;
+public class Level2 extends Level {
+    private static int MAX_MOVES = 20;
+    private LinkedList<Jail> jailCells=new LinkedList<>();
+
+    @Override
+    protected Cell initCell(int i, int j) {
+        if(i==SIZE/2&&j!=SIZE/2){
+            Jail ret=new Jail(this);
+            jailCells.add(ret);
+            ret.setIsDestroyed(true);
+            return ret;
+        }
+        return new Cell(this);
+    }
+
+    @Override
+    protected void endInit() {
+        for(Jail j:jailCells){
+            j.setIsDestroyed(false);
+        }
+    }
 
     @Override
     protected GameState newState() {
-        return new Level1.Level1State(REQUIRED_SCORE, MAX_MOVES);
+        return new Level2.Level2State(MAX_MOVES);
     }
 
-    @Override
-    protected void fillCells() {
+    private class Level2State extends GameState {
+        private int maxMoves;
 
-        wallCell = new Cell(this);
-        wallCell.setContent(new Wall());
-        candyGenCell = new CandyGeneratorCell(this);
-
-        //corners
-        g()[0][0].setAround(candyGenCell, g()[1][0], wallCell, g()[0][1]);
-        g()[0][SIZE-1].setAround(candyGenCell, g()[1][SIZE-1], g()[0][SIZE-2], wallCell);
-        g()[SIZE-1][0].setAround(g()[SIZE-2][0], wallCell, wallCell, g()[SIZE-1][1]);
-        g()[SIZE-1][SIZE-1].setAround(g()[SIZE-2][SIZE-1], wallCell, g()[SIZE-1][SIZE-2], wallCell);
-
-        //upper line cells
-        for (int j = 1; j < SIZE-1; j++) {
-            g()[0][j].setAround(candyGenCell,g()[1][j],g()[0][j-1],g()[0][j+1]);
-        }
-        //bottom line cells
-        for (int j = 1; j < SIZE-1; j++) {
-            g()[SIZE-1][j].setAround(g()[SIZE-2][j], wallCell, g()[SIZE-1][j-1],g()[SIZE-1][j+1]);
-        }
-        //left line cells
-        for (int i = 1; i < SIZE-1; i++) {
-            g()[i][0].setAround(g()[i-1][0],g()[i+1][0], wallCell ,g()[i][1]);
-        }
-        //right line cells
-        for (int i = 1; i < SIZE-1; i++) {
-            g()[i][SIZE-1].setAround(g()[i-1][SIZE-1],g()[i+1][SIZE-1], g()[i][SIZE-2], wallCell);
-        }
-        //central cells
-        for (int i = 1; i < SIZE-1; i++) {
-            for (int j = 1; j < SIZE-1; j++) {
-                g()[i][j].setAround(g()[i-1][j],g()[i+1][j],g()[i][j-1],g()[i][j+1]);
-            }
-        }
-    }
-
-    @Override
-    public boolean tryMove(int i1, int j1, int i2, int j2) {
-        boolean ret;
-        if (ret = super.tryMove(i1, j1, i2, j2)) {
-            state().addMove();
-        }
-        return ret;
-    }
-
-    private class Level1State extends GameState {
-        private long requiredScore;
-        private long maxMoves;
-
-        public Level1State(long requiredScore, int maxMoves) {
-            this.requiredScore = requiredScore;
-            this.maxMoves = maxMoves;
+        public Level2State(int maxMoves) {
+            this.maxMoves=maxMoves;
         }
 
         public boolean gameOver() {
@@ -78,7 +48,12 @@ public class Level2 extends Grid {
         }
 
         public boolean playerWon() {
-            return getScore() > requiredScore;
+            for(Jail j:jailCells){
+                if(!j.getIsDestroyed()){
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
