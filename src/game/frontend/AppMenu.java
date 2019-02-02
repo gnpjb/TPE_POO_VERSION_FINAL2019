@@ -1,7 +1,13 @@
 package game.frontend;
 
+import game.backend.CandyGame;
+import game.backend.level.Level1;
+import game.backend.level.Level2;
+import game.backend.level.Level3;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -34,7 +40,36 @@ public class AppMenu extends MenuBar {
             alert.showAndWait();
         });
         help.getItems().add(aboutMenuItem);
-        getMenus().addAll(file, help);
+
+        Menu level = new Menu("Nivel");
+        MenuItem level1=new MenuItem("Nivel 1");
+        level1.setOnAction(event->{
+            Stage stage= (Stage) this.getScene().getWindow();
+            CandyGame game = new CandyGame(Level1.class);
+            CandyFrame frame = new CandyFrame(game);
+            Scene scene = new Scene(frame);
+            stage.setScene(scene);
+        });
+        MenuItem level2=new MenuItem("Nivel 2");
+        level2.setOnAction(event->{
+            Stage stage= (Stage) this.getScene().getWindow();
+            CandyGame game = new CandyGame(Level2.class);
+            CandyFrame frame = new CandyFrame(game);
+            Scene scene = new Scene(frame);
+            stage.setScene(scene);
+        });
+        MenuItem level3=new MenuItem("Nivel 3");
+        level3.setOnAction(event->{
+            Stage stage= (Stage) this.getScene().getWindow();
+            CandyGame game = new CandyGame(Level3.class);
+            CandyFrame frame = new CandyFrame(game);
+            Scene scene = new Scene(frame);
+            stage.setScene(scene);
+        });
+        level.getItems().addAll(level1,level2,level3);
+
+
+        getMenus().addAll(file, help,level);
     }
 
 }
