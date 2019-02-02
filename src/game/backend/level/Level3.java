@@ -45,7 +45,7 @@ public class Level3 extends Level {
 
         public boolean playerWon() {
             for(Jelly j:jellyCells){
-                if(j.getIsDestroyed()){
+                if(!j.getIsDestroyed()){
                     return false;
                 }
             }
