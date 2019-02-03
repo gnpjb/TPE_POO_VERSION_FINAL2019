@@ -74,7 +74,7 @@ public class GameApp extends Application {
 		//aplica css style a todos los botones
 		Group buttonGroup = new Group(level1,level2,level3);
 		for(Node n: buttonGroup.getChildren()){
-			n.setStyle("-fx-background-color:Yellow;-fx-border-radius:2px;" +
+			n.setStyle("-fx-background-color:Yellow;-fx-background-radius:100;" +
 					"-fx-font-size:40px;");
 		}
 
