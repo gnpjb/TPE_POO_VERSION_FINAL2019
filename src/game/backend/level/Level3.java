@@ -17,6 +17,7 @@ public class Level3 extends Level {
 
     @Override
     protected Cell initCell(int i, int j) {
+        //settea unas Cells especificas como Jelly
         if(i==SIZE/2&&j!=SIZE/2){
             Jelly ret=new Jelly(this);
             jellyCells.add(ret);
@@ -27,6 +28,8 @@ public class Level3 extends Level {
 
     @Override
     protected void endInit() {
+        //esto se hace por si alguna Jelly se destruyo
+        //en el proceso de inicializacin del Grid
         for(Jelly j:jellyCells){
             j.setIsDestroyed(false);
         }

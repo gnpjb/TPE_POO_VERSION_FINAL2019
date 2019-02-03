@@ -19,7 +19,9 @@ import javafx.util.Duration;
 
 public class CandyFrame extends VBox {
 
-	private static final int CELL_SIZE = 65;
+	//hecho publico para poder crear un menu principal
+	// de un tamaño mas similar al final
+	public static final int CELL_SIZE = 65;
 
 	private BoardPanel boardPanel;
 	private ScorePanel scorePanel;

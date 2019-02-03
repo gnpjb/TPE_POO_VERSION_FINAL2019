@@ -20,12 +20,17 @@ public abstract class DestroyableCell extends Cell {
 
     @Override
     public void clearContent() {
+        //cuando una celda destruible es destruida
+        //isDestroyed debe pasar a ser true
         super.clearContent();
         isDestroyed=true;
     }
 
     @Override
     public String getKey() {
-        return "DESTROYABLE_CELL";
+        if(!isDestroyed){
+            return "DESTROYABLE_CELL";
+        }
+        return "DESTROYED_CELL";
     }
 }

@@ -10,9 +10,10 @@ public class Jelly extends DestroyableCell {
 
     @Override
     public String getKey() {
+        //una vez destruida debe verse como una cell normal
         if(!getIsDestroyed()){
             return "JELLY";
         }
-        return null;
+        return super.getKey();
     }
 }

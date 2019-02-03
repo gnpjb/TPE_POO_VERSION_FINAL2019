@@ -11,6 +11,7 @@ public class Jail extends DestroyableCell {
 
     @Override
     public boolean isMovable() {
+        //la celda no debe ser movible hasta que no se rompa
         if(getIsDestroyed()) {
             return super.isMovable();
         }else{
@@ -20,9 +21,11 @@ public class Jail extends DestroyableCell {
 
     @Override
     public String getKey() {
+        //una vez que la Jail se destruye entonces debe verse
+        //y actuar como cualquier otra celda
         if(!getIsDestroyed()){
             return "JAIL";
         }
-        return null;
+        return super.getKey();
     }
 }
