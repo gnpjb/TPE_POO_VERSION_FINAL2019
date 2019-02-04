@@ -99,6 +99,11 @@ public abstract class Grid {
 		if (move.isValid()) {
 			move.removeElements();
 			fallElements();
+			//este wasUpdated() es porque cualquier movimiento
+			//updatea el grid. Sin esto se genera un bug visual
+			//en el caso de que se quiera eliminar una figura justo debajo
+			//de una celda no movible
+			wasUpdated();
 			return true;
 		} else {
 			swapContent(i1, j1, i2, j2);
